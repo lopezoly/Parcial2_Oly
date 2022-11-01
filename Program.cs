@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Parcial2_Oly.Areas.Identity;
 using Parcial2_Oly.Data;
+using Parcial2_Oly.BLL;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddScoped<VitaminasBLL>();
+builder.Services.AddScoped<NotificationService>();
+
+builder.Services.AddScoped<VerdurasBLL>();
 var app = builder.Build();
 
 

@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Estudiante General\\Desktop\\New folder\\Parcial2_Oly\\Parcial2_Oly.csproj": {}
+    "C:\\Users\\Lopez Oly\\source\\repos\\Parcial2_Oly\\Parcial2_Oly.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Estudiante General\\Desktop\\New folder\\Parcial2_Oly\\Parcial2_Oly.csproj": {
+    "C:\\Users\\Lopez Oly\\source\\repos\\Parcial2_Oly\\Parcial2_Oly.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Estudiante General\\Desktop\\New folder\\Parcial2_Oly\\Parcial2_Oly.csproj",
+        "projectUniqueName": "C:\\Users\\Lopez Oly\\source\\repos\\Parcial2_Oly\\Parcial2_Oly.csproj",
         "projectName": "Parcial2_Oly",
-        "projectPath": "C:\\Users\\Estudiante General\\Desktop\\New folder\\Parcial2_Oly\\Parcial2_Oly.csproj",
-        "packagesPath": "C:\\Users\\Estudiante General\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Estudiante General\\Desktop\\New folder\\Parcial2_Oly\\obj\\",
+        "projectPath": "C:\\Users\\Lopez Oly\\source\\repos\\Parcial2_Oly\\Parcial2_Oly.csproj",
+        "packagesPath": "C:\\Users\\Lopez Oly\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lopez Oly\\source\\repos\\Parcial2_Oly\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Estudiante General\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lopez Oly\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -59,6 +63,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[6.0.5, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[4.2.0, )"
             }
           },
           "imports": [
@@ -79,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

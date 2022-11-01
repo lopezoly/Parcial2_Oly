@@ -1,0 +1,96 @@
+﻿@page "/C_Verduras"
+@inject VerdurasBLL verdurasBLL
+
+
+
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Consultas de Ocupaciones</h3>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <label>Filtro</label>
+                        <select class="form-control" @bind="Filtro">
+                            <option value="0">Selecione un Filtro de lo contrario generará la tabla completa</option>
+                            <option value="1">VerduraId</option>
+                            <option value="2">Nombre</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="input-group d-flex align-items-end">
+                            <label>Buscar</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" @bind="Criterio" />
+                                <button type="button" class="btn btn-info bi bi-binoculars" @onclick="Buscar">   Buscar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+
+        </form>
+        <table class="table table-primary table-striped">
+            <thead class="thead-green">
+                <tr class="table-info">
+                    <th>VerduraId</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in lista)
+                {
+                    <tr>
+                        <td>@item.VerduraId</td>
+                        <td>@item.Nombre</td>
+                        <td><a href="R_Verduras/@item.VerduraId">View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public Verduras verduras { get; set; } = new Verduras();
+    public List<Verduras> lista { get; set; } = new List<Verduras>();
+    public string? Filtro { get; set; }
+    public string? Criterio { get; set; }
+
+
+    public void Buscar()
+    {
+        lista = verdurasBLL.GetList(o => true);
+        if (Criterio != null)
+        {
+            switch (Filtro)
+            {
+                case "0":
+                    lista = verdurasBLL.GetList(o => true);
+                    break;
+                case "1":
+                    lista = verdurasBLL.GetList(o => o.VerduraId.ToString() == (Criterio));
+                    break;
+            }
+        }
+        else
+        {
+            lista = verdurasBLL.GetList(o => true);
+        }
+
+    }
+
+}
