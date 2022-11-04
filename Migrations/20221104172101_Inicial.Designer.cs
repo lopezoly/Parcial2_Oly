@@ -4,20 +4,45 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Parcial2_Oly.Data;
+using Parcial2_Oly.DAL;
 
 #nullable disable
 
 namespace Parcial2_Oly.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221101151931_Inicial")]
+    [DbContext(typeof(Contexto))]
+    [Migration("20221104172101_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+
+            modelBuilder.Entity("DetalleVerduras", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("VerduraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VitaminaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("VerduraId");
+
+                    b.ToTable("DetalleVerduras");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -221,6 +246,9 @@ namespace Parcial2_Oly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
@@ -274,8 +302,17 @@ namespace Parcial2_Oly.Migrations
                         {
                             VitaminaId = 5,
                             Cantidad = 0.0,
-                            Nombre = "Vitamina B"
+                            Nombre = "Vitamina E"
                         });
+                });
+
+            modelBuilder.Entity("DetalleVerduras", b =>
+                {
+                    b.HasOne("Verduras", null)
+                        .WithMany("Detalles")
+                        .HasForeignKey("VerduraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -327,6 +364,11 @@ namespace Parcial2_Oly.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Verduras", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }

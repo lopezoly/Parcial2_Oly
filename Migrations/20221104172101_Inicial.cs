@@ -54,7 +54,8 @@ namespace Parcial2_Oly.Migrations
                 {
                     VerduraId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(type: "TEXT", nullable: true)
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,6 +182,28 @@ namespace Parcial2_Oly.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DetalleVerduras",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    VerduraId = table.Column<int>(type: "INTEGER", nullable: false),
+                    VitaminaId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetalleVerduras", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_DetalleVerduras_Verduras_VerduraId",
+                        column: x => x.VerduraId,
+                        principalTable: "Verduras",
+                        principalColumn: "VerduraId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Vitaminas",
                 columns: new[] { "VitaminaId", "Cantidad", "Nombre" },
@@ -204,7 +227,7 @@ namespace Parcial2_Oly.Migrations
             migrationBuilder.InsertData(
                 table: "Vitaminas",
                 columns: new[] { "VitaminaId", "Cantidad", "Nombre" },
-                values: new object[] { 5, 0.0, "Vitamina B" });
+                values: new object[] { 5, 0.0, "Vitamina E" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -242,6 +265,11 @@ namespace Parcial2_Oly.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleVerduras_VerduraId",
+                table: "DetalleVerduras",
+                column: "VerduraId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -262,7 +290,7 @@ namespace Parcial2_Oly.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Verduras");
+                name: "DetalleVerduras");
 
             migrationBuilder.DropTable(
                 name: "Vitaminas");
@@ -272,6 +300,9 @@ namespace Parcial2_Oly.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Verduras");
         }
     }
 }

@@ -33,7 +33,61 @@
                     <ValidationMessage For="@(() => verdura.Nombre)" />
                 </div>
             </div>
+            <div class="card-header">
+                <h3>Vinaminas</h3>
+                <div class="container">
+                    <div class="row">
+                        @*VitaminaId*@
+                        <div class="col">
+                            <label>VitaminaId</label>
+                            <InputSelect class="form-select" @bind-Value="detalle.VitaminaId">
+                                <option value="0" disabled>Seleccione una Vitamina</option>
+                                @foreach (var vitamina in Listvitaminas)
+                                {
+                                    <option value="@vitamina.VitaminaId">@vitamina.VitaminaId - @vitamina.Nombre</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => detalle.VitaminaId)"></ValidationMessage>
+                        </div>
+                        <div class="col">
+                            <label>Cantidad (mg)</label>
+                            <InputNumber class="form-control" @bind-Value="detalle.Cantidad"></InputNumber>
+                            <ValidationMessage For="@(() => detalle.Cantidad)"></ValidationMessage>
+                        </div>
+                        <div class="col">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary input-group-text" @onclick="Agregar">
+                                    <span class="bi bi-file-earmark-plus">Agregar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <table class="table table-bordered table-light">
+            <thead class="thead">
+                <tr class="table">
+                    <th>VitaminaId</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in verdura.Detalles)
+                {
+                    <tr>
+                        <td>@item.VitaminaId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad (Mg)</td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary bi bi-person-plus-fill" @onclick="Nuevo"> Nuevo</button>
@@ -48,15 +102,43 @@
     [Parameter]
     public int VerduraId { get; set; }
     public Verduras verdura { get; set; } = new Verduras();
+    public Vitaminas vitamina { get; set; } = new Vitaminas();
+    public DetalleVerduras detalle { get; set; } = new DetalleVerduras();
 
-     public List<Verduras> lista { get; set; } = new List<Verduras>();
+
+    public List<Vitaminas> Listvitaminas { get; set; } = new List<Vitaminas>();
+
     protected override void OnInitialized()
     {
+
         if (VerduraId > 0)
         {
             this.verdura.VerduraId = VerduraId;
             this.Buscar();
         }
+    }
+
+    public void Agregar()
+    {
+        if (verdura.VerduraId > 0)
+        {
+            var vitaminas = verdurasBLL.Buscarv(detalle.VitaminaId);
+            detalle.Nombre = vitaminas.Nombre;
+            verdura.Detalles.Add(detalle);
+            detalle = new DetalleVerduras();
+            verdura.Cantidad = verdura.Detalles.Sum(d => d.Cantidad);
+        }
+        else
+        {
+            ShowNotification(
+         new NotificationMessage
+             {
+                 Severity = NotificationSeverity.Error,
+                 Summary = "Debe ingresar el Id de una Vitamina"
+             });
+            return;
+        }
+
     }
     private void Buscar()
     {
@@ -65,8 +147,30 @@
             var encontrado = verdurasBLL.Buscar(verdura.VerduraId);
 
             if (encontrado != null)
+            {
                 this.verdura = encontrado;
+            }
+            else
+            {
+                ShowNotification(
+            new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Warning,
+                    Summary = "No hay ninguna Verdura con este ID"
+                });
+            }
+
         }
+        else
+        {
+            ShowNotification(
+        new NotificationMessage
+            {
+                Severity = NotificationSeverity.Warning,
+                Summary = "No hay ninguna Verdura con este ID"
+            });
+        }
+
     }
     public void Guardar()
     {
@@ -77,20 +181,20 @@
         {
             ShowNotification(
             new NotificationMessage
-            {
-                Severity = NotificationSeverity.Success,
-                Summary = "Guardado correctamente"
-            });
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Guardado correctamente"
+                });
             Nuevo();
         }
         else
         {
             ShowNotification(
             new NotificationMessage
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = "No se ha guardado correctamente"
-            });
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "No se ha guardado correctamente"
+                });
         }
 
     }
@@ -100,28 +204,27 @@
     }
     public void Eliminar()
     {
-        bool elimino;
+        bool elimino = verdurasBLL.Eliminar(verdura);
 
-        elimino = verdurasBLL.Eliminar(verdura);
 
         if (elimino)
         {
             ShowNotification(
             new NotificationMessage
-            {
-                Severity = NotificationSeverity.Error,
-                Summary = "Eliminado correctamente"
-            });
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Eliminado correctamente"
+                });
             Nuevo();
         }
         else
         {
             ShowNotification(
             new NotificationMessage
-            {
-                Severity = NotificationSeverity.Info,
-                Summary = "No se ha eliminado correctamente"
-            });
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = "No se ha eliminado correctamente"
+                });
         }
     }
     void ShowNotification(NotificationMessage message)

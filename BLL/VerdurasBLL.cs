@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Parcial2_Oly.Data;
+using Parcial2_Oly.DAL;
+
 using System.Linq.Expressions;
 
 namespace Parcial2_Oly.BLL
@@ -7,8 +8,8 @@ namespace Parcial2_Oly.BLL
     public class VerdurasBLL
     {
         
-        private ApplicationDbContext _contexto;
-        public VerdurasBLL(ApplicationDbContext contexto)
+        private Contexto _contexto;
+        public VerdurasBLL(Contexto contexto)
         {
             _contexto = contexto;
         }
@@ -26,7 +27,7 @@ namespace Parcial2_Oly.BLL
         }
         private bool Insertar(Verduras verduras)
         {
-            _contexto.Verduras.Add(verduras);
+             _contexto.Verduras.Add(verduras);
             return _contexto.SaveChanges() > 0;
         }
         public bool Modificar(Verduras verduras)
@@ -53,6 +54,20 @@ namespace Parcial2_Oly.BLL
                 .AsNoTracking()
                 .Where(Criterio)
                 .ToList();
+        }
+        public List<Vitaminas> GetVitaminas(Expression<Func<Vitaminas, bool>> Criterio)
+        {
+            return _contexto.Vitaminas
+                .AsNoTracking()
+                .Where(Criterio)
+                .ToList();
+        }
+        public Vitaminas? Buscarv(int Id)
+        {
+            return _contexto.Vitaminas
+                .Where(p => p.VitaminaId == Id)
+                .AsNoTracking()
+                .SingleOrDefault();
         }
     }
 }

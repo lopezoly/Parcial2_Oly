@@ -1,7 +1,7 @@
 ﻿@page "/C_Verduras"
 @inject VerdurasBLL verdurasBLL
 
-
+@inject NotificationService notificationService
 
 
 <EditForm Model="lista">
@@ -12,7 +12,7 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
         </div>
     </div>
-
+    
     <div class="card-body">
         <form>
             <div class="container">
@@ -47,6 +47,7 @@
                 <tr class="table-info">
                     <th>VerduraId</th>
                     <th>Nombre</th>
+                    <th>Link</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,6 +91,21 @@
         {
             lista = verdurasBLL.GetList(o => true);
         }
+        if(Criterio == null)
+        {
+            ShowNotification(
+            new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Warning,
+                    Summary = "No se encontraron registros de Verduras"
+                });
+        }
+
+
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
 
     }
 
